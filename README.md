@@ -1,2 +1,2 @@
 # koodikerho
-Koodikerhon materiaalia
+Teaching the basics of programming starting from basic HTML websites
