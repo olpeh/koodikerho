@@ -1,0 +1,34 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  background-color: rgb(158, 158, 158);
+  background-image: url('../img/badge.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  /*
+  kommentoitu - ei vaikuta!
+  background-size: cover;
+  */
+  color: white;
+}
+
+.otsikko {
+  color: green;
+  font-size: 48px;
+  text-align: center;
+}
+
+a {
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.links a {
+  display: block;
+  font-size: 28px;
+}
