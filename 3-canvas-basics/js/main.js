@@ -27,3 +27,11 @@ function timeout() {
 }
 
 timeout();
+
+// For loop:
+
+// for (var i = 0; i < 300; i++) {
+//   console.log('Loop: ' + i);
+//   ctx.clearRect(0, 0, 600, 600);
+//   ctx.fillRect(posX + i, posY + i, sizeX, sizeY);
+// }
