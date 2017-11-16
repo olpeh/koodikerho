@@ -6,3 +6,11 @@ html {
 body {
   width: 100%;
 }
+
+main {
+  text-align: center;
+}
+
+canvas {
+  border: 2px solid black;
+}
