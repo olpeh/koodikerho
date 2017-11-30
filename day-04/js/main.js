@@ -90,7 +90,7 @@ function timeout() {
 
 timeout();
 
-document.addEventListener('keypress', event => {
+document.addEventListener('keydown', event => {
   const keyName = event.key;
   console.log(keyName);
   if (keyName === 'ArrowLeft') {
