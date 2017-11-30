@@ -6,7 +6,7 @@ var ctx = canvas.getContext('2d');
 ctx.fillStyle = 'blue';
 
 // Madon suhteellinen nopeus
-var speedFactor = 1 / 20;
+var speedFactor = 1 / 5;
 
 var gameOver = false;
 
