@@ -11,3 +11,4 @@ Teaching the basics of programming starting from basic HTML websites
 1. Canvas basics, drawing in a canvas. Variables and for loops
 1. Objects, game loop, listening to keypresses and updating the snake's position
    on the canvas
+1. Detetcing collisions, more game logic, local score - playable game

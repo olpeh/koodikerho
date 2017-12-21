@@ -5,3 +5,5 @@
 * More game logic
 * Local score and high score calculation
 * Playable game
+
+![Screen capture](img/snake.gif "Snake v2")

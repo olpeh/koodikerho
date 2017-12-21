@@ -3,16 +3,15 @@ console.log('Hello world');
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
-ctx.fillStyle = 'blue';
-
 // Madon suhteellinen nopeus
 var speedFactor = 1 / 5;
 
 var gameOver = false;
+var score = 0;
 
 var gameSize = {
-  w: 600,
-  h: 600
+  w: 400,
+  h: 400
 };
 
 var snake = {
@@ -21,13 +20,26 @@ var snake = {
     y: -1
   },
   position: {
-    x: 295,
-    y: 295
+    x: 200,
+    y: 200
+  },
+  size: {
+    x: 15,
+    y: 15
+  },
+  color: 'blue'
+};
+
+var apple = {
+  position: {
+    x: 50,
+    y: 50
   },
   size: {
     x: 10,
     y: 10
-  }
+  },
+  color: 'green'
 };
 
 var previousTime = performance.now();
@@ -57,23 +69,63 @@ function checkGameConditions() {
   var y = snake.position.y;
 
   // Tarkistetaan onko mato vielä kentän sisällä vai ei
-  if (x <= 0 || y <= 0 || x >= gameSize.w || y >= gameSize.h) {
+  if (
+    x <= 0 ||
+    y <= 0 ||
+    x >= gameSize.w - snake.size.x ||
+    y >= gameSize.h - snake.size.y
+  ) {
     gameOver = true;
   }
 }
 
 function render() {
+  // Tyhjennetään kenttä
   ctx.clearRect(0, 0, gameSize.w, gameSize.h);
+
+  // Piirretään mato
+  ctx.fillStyle = snake.color;
   ctx.fillRect(snake.position.x, snake.position.y, snake.size.x, snake.size.y);
+
+  // Piirretään omena
+  ctx.fillStyle = apple.color;
+  ctx.fillRect(apple.position.x, apple.position.y, apple.size.x, apple.size.y);
+}
+
+function getRandomNumber(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function moveApple() {
+  apple.position.x = getRandomNumber(0, gameSize.w - apple.size.x);
+  apple.position.y = getRandomNumber(0, gameSize.h - apple.size.y);
+}
+
+function checkCollitions() {
+  var x = snake.position.x - apple.position.x;
+  var y = snake.position.y - apple.position.y;
+  var distance = Math.sqrt(x * x + y * y);
+
+  // Jos mato osuu omenaan
+  if (distance <= snake.size.x || distance <= apple.size.x) {
+    // Kasvatetaan pisteitä
+    score++;
+    // Näytetään oikea score
+    document.querySelector('.score').innerHTML = score;
+    // Siirretään omena uuteen paikkaan
+    moveApple();
+  }
 }
 
 function game() {
   // Lasketaan madon seuraava sijainti
   update();
-  // Tsekataan onko mato kentän sisällä, jatkuuko peli
-  checkGameConditions();
   // Päivitetään näkymä
   render();
+  // Tsekataan onko mato kentän sisällä, jatkuuko peli
+  checkGameConditions();
+  // Tsekataan törmaykset
+  checkCollitions();
 }
 
 // Start the game
