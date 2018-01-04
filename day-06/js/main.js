@@ -3,9 +3,6 @@ console.log('Hello world');
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
-// Madon suhteellinen nopeus
-var speedFactor = 1 / 5;
-
 var gameOver = false;
 var score = 0;
 
@@ -20,48 +17,42 @@ var snake = {
     y: -1
   },
   position: {
-    x: 200,
-    y: 200
+    x: Math.floor(gameSize.w / 2 / 15),
+    y: Math.floor(gameSize.h / 2 / 15)
   },
   size: {
     x: 15,
     y: 15
   },
-  color: 'blue'
+  color: 'blue',
+  tail: 3,
+  trail: []
 };
 
 var apple = {
   position: {
-    x: 50,
-    y: 50
+    x: 2,
+    y: 2
   },
   size: {
-    x: 10,
-    y: 10
+    x: 15,
+    y: 15
   },
   color: 'green'
 };
 
-var previousTime = performance.now();
-
 function update() {
-  var timeNow = performance.now();
-  var timeDiff = timeNow - previousTime;
-  // Lasketaan varsinaiset nopeudet X ja Y suunnassa
-  var actualSpeedX = snake.speed.x * speedFactor;
-  var actualSpeedY = snake.speed.y * speedFactor;
+  // Tallennetaan madon edellinen sijainti "häntään"
+  snake.trail.push({ x: snake.position.x, y: snake.position.y });
 
-  // v = s / t -> s = vt
-  // Lasketaan kuljettu matka X ja Y suunnassa
-  var distanceX = actualSpeedX * timeDiff;
-  var distanceY = actualSpeedY * timeDiff;
+  // Rajoitetaan "hännän" kokoa maksimissaan hännän pituudeksi
+  while (snake.trail.length > snake.tail) {
+    snake.trail.shift();
+  }
 
   // Päivitetään madon tuleva sijainti
-  snake.position.x += distanceX;
-  snake.position.y += distanceY;
-
-  // Päivitetään edelliseksi ajaksi ttämän kierroksen aika
-  previousTime = timeNow;
+  snake.position.x += snake.speed.x;
+  snake.position.y += snake.speed.y;
 }
 
 function checkGameConditions() {
@@ -70,10 +61,10 @@ function checkGameConditions() {
 
   // Tarkistetaan onko mato vielä kentän sisällä vai ei
   if (
-    x <= 0 ||
-    y <= 0 ||
-    x >= gameSize.w - snake.size.x ||
-    y >= gameSize.h - snake.size.y
+    x < 0 ||
+    y < 0 ||
+    x > Math.floor(gameSize.w / snake.size.x) ||
+    y > Math.floor(gameSize.h / snake.size.y)
   ) {
     gameOver = true;
   }
@@ -85,31 +76,44 @@ function render() {
 
   // Piirretään mato
   ctx.fillStyle = snake.color;
-  ctx.fillRect(snake.position.x, snake.position.y, snake.size.x, snake.size.y);
+  for (var i = 0; i < snake.trail.length; i++) {
+    ctx.fillRect(
+      snake.trail[i].x * snake.size.x,
+      snake.trail[i].y * snake.size.y,
+      snake.size.x - 2,
+      snake.size.y - 2
+    );
+  }
 
   // Piirretään omena
   ctx.fillStyle = apple.color;
-  ctx.fillRect(apple.position.x, apple.position.y, apple.size.x, apple.size.y);
+  ctx.fillRect(
+    apple.position.x * apple.size.x,
+    apple.position.y * apple.size.y,
+    apple.size.x - 2,
+    apple.size.y - 2
+  );
 }
 
 function getRandomNumber(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
 function moveApple() {
-  apple.position.x = getRandomNumber(0, gameSize.w - apple.size.x);
-  apple.position.y = getRandomNumber(0, gameSize.h - apple.size.y);
+  apple.position.x = getRandomNumber(0, Math.floor(gameSize.w / apple.size.x));
+  apple.position.y = getRandomNumber(0, Math.floor(gameSize.h / apple.size.y));
 }
 
 function checkCollitions() {
-  var x = snake.position.x - apple.position.x;
-  var y = snake.position.y - apple.position.y;
-  var distance = Math.sqrt(x * x + y * y);
-
   // Jos mato osuu omenaan
-  if (distance <= snake.size.x || distance <= apple.size.x) {
+  if (
+    apple.position.x === snake.position.x &&
+    apple.position.y === snake.position.y
+  ) {
     // Kasvatetaan pisteitä
     score++;
+    // Kasvatetaan madon kokoa
+    snake.tail++;
     // Näytetään oikea score
     document.querySelector('.score').innerHTML = score;
     // Siirretään omena uuteen paikkaan
@@ -137,7 +141,7 @@ function timeout() {
     } else {
       alert('Alert game over');
     }
-  }, 10);
+  }, 1000 / 15);
 }
 
 timeout();
