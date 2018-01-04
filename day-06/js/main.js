@@ -45,7 +45,7 @@ function update() {
   // Tallennetaan madon edellinen sijainti "häntään"
   snake.trail.push({ x: snake.position.x, y: snake.position.y });
 
-  // Rajoitetaan "hännän" kokoa maksimissaan hännän pituudeksi
+  // Rajoitetaan "hännän" kokoa maksimissaan hännän pituiseksi
   while (snake.trail.length > snake.tail) {
     snake.trail.shift();
   }
