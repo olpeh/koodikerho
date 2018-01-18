@@ -2,6 +2,7 @@ console.log('Hello world');
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var sound = new Audio("sound.wav");
 
 var gameOver = false;
 var score = 0;
@@ -43,7 +44,10 @@ var apple = {
 
 function update() {
   // Tallennetaan madon edellinen sijainti "häntään"
-  snake.trail.push({ x: snake.position.x, y: snake.position.y });
+  snake.trail.push({
+    x: snake.position.x,
+    y: snake.position.y
+  });
 
   // Rajoitetaan "hännän" kokoa maksimissaan hännän pituiseksi
   while (snake.trail.length > snake.tail) {
@@ -67,6 +71,13 @@ function checkGameConditions() {
     y > Math.floor(gameSize.h / snake.size.y)
   ) {
     gameOver = true;
+  }
+
+  // Tarkistetaan osuuko mato itseensä
+  for (var i = 0; i < snake.trail.length; i++) {
+    if (x === snake.trail[i].x && y === snake.trail[i].y) {
+      gameOver = true;
+    }
   }
 }
 
@@ -102,6 +113,13 @@ function getRandomNumber(min, max) {
 function moveApple() {
   apple.position.x = getRandomNumber(0, Math.floor(gameSize.w / apple.size.x));
   apple.position.y = getRandomNumber(0, Math.floor(gameSize.h / apple.size.y));
+
+  for (var i = 0; i < snake.trail.length; i++) {
+    if (apple.position.x === snake.trail[i].x && apple.position.y === snake.trail[i].y) {
+      moveApple();
+      break;
+    }
+  }
 }
 
 function checkCollitions() {
@@ -112,6 +130,8 @@ function checkCollitions() {
   ) {
     // Kasvatetaan pisteitä
     score++;
+    // Soitetaan ääni
+    sound.play();
     // Kasvatetaan madon kokoa
     snake.tail++;
     // Näytetään oikea score
@@ -134,7 +154,7 @@ function game() {
 
 // Start the game
 function timeout() {
-  setTimeout(function() {
+  setTimeout(function () {
     if (!gameOver) {
       game();
       timeout();
@@ -148,32 +168,40 @@ timeout();
 
 document.addEventListener('keydown', event => {
   const keyName = event.key;
-  console.log(keyName);
   if (keyName === 'ArrowLeft') {
-    snake.speed = {
+    setSpeedIfAllowed(snake.speed, {
       x: -1,
       y: 0
-    };
+    });
   }
 
   if (keyName === 'ArrowRight') {
-    snake.speed = {
+    setSpeedIfAllowed(snake.speed, {
       x: 1,
       y: 0
-    };
+    });
   }
 
   if (keyName === 'ArrowUp') {
-    snake.speed = {
+    setSpeedIfAllowed(snake.speed, {
       x: 0,
       y: -1
-    };
+    });
   }
 
   if (keyName === 'ArrowDown') {
-    snake.speed = {
+    setSpeedIfAllowed(snake.speed, {
       x: 0,
       y: 1
-    };
+    });
   }
 });
+
+function setSpeedIfAllowed(currentSpeed, newSpeed) {
+  // Jos uusi nopeus olisi vastakkainen suunta, ei se ole sallittu
+  if (currentSpeed.x !== 0 && currentSpeed.x !== -newSpeed.x) {
+    snake.speed = newSpeed;
+  } else if (currentSpeed.y !== 0 && currentSpeed.y !== -newSpeed.y) {
+    snake.speed = newSpeed;
+  }
+}
