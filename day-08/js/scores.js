@@ -1,6 +1,6 @@
 function getTopScores() {
   var scoresRef = firebase.database().ref('/scores');
-  var scoresQuery = scoresRef.orderByChild('score').limitToLast(10);
+  var scoresQuery = scoresRef.orderByChild('score').limitToFirst(10);
   return scoresQuery.once('value').then(function(data) {
     var entries = data.val();
     Object.entries(entries).forEach(entry => {
