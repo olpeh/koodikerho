@@ -1,4 +1,4 @@
-function getTopScore() {
+function getTopScores() {
   var scoresRef = firebase.database().ref('/scores');
   var scoresQuery = scoresRef.orderByChild('score').limitToLast(10);
   return scoresQuery.once('value').then(function(data) {
@@ -12,12 +12,10 @@ function getTopScore() {
 }
 
 function writeScore(name, score) {
-  var randId = getRandomNumber(1, 10000);
-  firebase
-    .database()
-    .ref('scores/' + randId)
-    .set({
-      name: name,
-      score: score
-    });
+  var scoreRef = firebase.database().ref('/scores');
+  var newScoreRef = scoreRef.push();
+  newScoreRef.set({
+    name: name,
+    score: score
+  });
 }
