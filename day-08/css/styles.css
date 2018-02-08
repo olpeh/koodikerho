@@ -9,9 +9,14 @@ body {
 }
 
 main {
-  text-align: center;
+  display: flex;
+  padding-left: 100px;
 }
 
 canvas {
   border: 2px solid black;
+}
+
+.top-scores-container {
+  padding: 80px;
 }

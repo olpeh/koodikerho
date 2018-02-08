@@ -11,27 +11,22 @@
 <body>
 
     <main>
-        <h1>Snake score:
-            <span class="score">0</span>
-        </h1>
-        <canvas width="400" height="400" id="canvas"></canvas>
-        <p>Use arrow keys to move</p>
+        <div class="game-container">
+            <h1>Snake score:
+                <span class="score">0</span>
+            </h1>
+            <canvas width="400" height="400" id="canvas"></canvas>
+            <p>Use arrow keys to move</p>
+        </div>
+        <div class="top-scores-container">
+            <h2>Top scores</h2>
+            <ol class="top-scores">
+            </ol>
+        </div>
     </main>
 
     <script src="js/main.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyCaXZhh4X3jvsQsIp2FDCZ7-JXQVl6OrcA",
-            authDomain: "koodikerho-snake.firebaseapp.com",
-            databaseURL: "https://koodikerho-snake.firebaseio.com",
-            projectId: "koodikerho-snake",
-            storageBucket: "",
-            messagingSenderId: "97260963832"
-        };
-        firebase.initializeApp(config);
-    </script>
     <script src="js/scores.js"></script>
 </body>
 

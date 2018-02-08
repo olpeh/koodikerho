@@ -2,7 +2,7 @@ console.log('Hello world');
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-var sound = new Audio("sound.wav");
+var sound = new Audio('sound.wav');
 
 var gameOver = false;
 var score = 0;
@@ -115,7 +115,10 @@ function moveApple() {
   apple.position.y = getRandomNumber(0, Math.floor(gameSize.h / apple.size.y));
 
   for (var i = 0; i < snake.trail.length; i++) {
-    if (apple.position.x === snake.trail[i].x && apple.position.y === snake.trail[i].y) {
+    if (
+      apple.position.x === snake.trail[i].x &&
+      apple.position.y === snake.trail[i].y
+    ) {
       moveApple();
       break;
     }
@@ -154,12 +157,17 @@ function game() {
 
 // Start the game
 function timeout() {
-  setTimeout(function () {
+  setTimeout(function() {
     if (!gameOver) {
       game();
       timeout();
     } else {
-      alert('Alert game over');
+      var name = prompt("Game over. What's your name?");
+      console.log(name);
+      if (name) {
+        writeScore(name, score);
+        getTopScores();
+      }
     }
   }, 1000 / 15);
 }
