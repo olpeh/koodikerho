@@ -14,3 +14,4 @@ Teaching the basics of programming starting from basic HTML websites
 1. Detetcing collisions, more game logic, local score - playable game
 1. From pixel-based calculations to grid based, draw the trail of the snake,
    grow the snake when eating apples. An even more playable game.
+1. Snake with top scores in Firebase

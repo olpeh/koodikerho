@@ -1,8 +1,6 @@
-# Snake advanced - an even more playable game
+# Snake with top scores
 
-* Stop snake from going through itself
-* Add a simple sound effect
-* Stop apple from appearing inside the snake
+* Top scores saved in Firebase
+* Top scores displayed on the side of the game
 
-
-![Screen capture](img/snake.gif "Snake v3")
+![Screen capture](img/snake.gif 'Snake v3')
