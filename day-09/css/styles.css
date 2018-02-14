@@ -1,0 +1,22 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  overflow: hidden;
+}
+
+main {
+  display: flex;
+  padding-left: 100px;
+}
+
+canvas {
+  border: 2px solid black;
+}
+
+.top-scores-container {
+  padding: 80px;
+}

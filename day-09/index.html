@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Snake with top scores</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <main>
+        <div class="game-container">
+            <h1>Snake score:
+                <span class="score">0</span>
+            </h1>
+            <canvas width="400" height="400" id="canvas"></canvas>
+            <p>Use arrow keys to move</p>
+        </div>
+        <div class="top-scores-container">
+            <h2>Top scores</h2>
+            <ol class="top-scores">
+            </ol>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script src="js/scores.js"></script>
+</body>
+
+</html>
