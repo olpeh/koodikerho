@@ -4,7 +4,7 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var sound = new Audio('sound.wav');
 
-var gameOver = false;
+var gameOver = true;
 var score = 0;
 
 var gameSize = {
@@ -12,23 +12,30 @@ var gameSize = {
   h: 400
 };
 
-var snake = {
-  speed: {
-    x: 0,
-    y: -1
-  },
-  position: {
-    x: Math.floor(gameSize.w / 2 / 15),
-    y: Math.floor(gameSize.h / 2 / 15)
-  },
-  size: {
-    x: 15,
-    y: 15
-  },
-  color: 'blue',
-  tail: 3,
-  trail: []
-};
+var centerX = Math.floor(gameSize.w / 2 / 15);
+var centerY = Math.floor(gameSize.h / 2 / 15);
+
+function createSnake() {
+  return {
+    speed: {
+      x: null,
+      y: null
+    },
+    position: {
+      x: centerX,
+      y: centerY
+    },
+    size: {
+      x: 15,
+      y: 15
+    },
+    color: 'blue',
+    tail: 3,
+    trail: [{ x: centerX, y: centerY }]
+  };
+}
+
+var snake = createSnake();
 
 var apple = {
   position: {
@@ -155,12 +162,17 @@ function game() {
   checkCollitions();
 }
 
-// Start the game
-function timeout() {
+function resetGame() {
+  score = 0;
+  snake = createSnake();
+  moveApple();
+}
+
+function startTheGame() {
   setTimeout(function() {
     if (!gameOver) {
       game();
-      timeout();
+      startTheGame();
     } else {
       var name = prompt("Game over. What's your name?");
       console.log(name);
@@ -168,14 +180,21 @@ function timeout() {
         writeScore(name, score);
         getTopScores();
       }
+      resetGame();
     }
   }, 1000 / 15);
 }
 
-timeout();
+// Ennen pelin alkua tapahtuvat asiat
+render();
 
 document.addEventListener('keydown', event => {
   const keyName = event.key;
+  if (gameOver && keyName.startsWith('Arrow')) {
+    gameOver = false;
+    startTheGame();
+  }
+
   if (keyName === 'ArrowLeft') {
     setSpeedIfAllowed(snake.speed, {
       x: -1,

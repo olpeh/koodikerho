@@ -1,6 +1,6 @@
 # Snake with top scores
 
-* Top scores saved in Firebase
-* Top scores displayed on the side of the game
+* Game starts with arrow keys
+* New game starts without refreshing the page
 
 ![Screen capture](img/snake.gif 'Snake v3')
